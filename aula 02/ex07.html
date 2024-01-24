@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Somando números</title>
+    <style>
+        input{
+            width: 80px;
+            background-color: rgb(255, 0, 0);
+            border-radius: 5px;
+            color: white;
+        }
+
+        div#res{
+            margin-top: 10px;
+            background-color: rgb(255, 0, 0);
+            width: 80px;
+            border-radius: 5px;
+            text-align: center;
+            color: white;
+        }
+
+        section h1{
+            color: rgb(255, 255, 255);
+        }
+
+        section{
+            background-color: rgb(6, 33, 169);
+            width: 300px;
+        }
+    </style>
+</head>
+<body>
+    <section>
+        <h1>Calculadora de pobre</h1>
+        <input type="number" name="text" id="text"> +
+        <input type="number" name="text1" id="text1">
+        <input type="button" value="somar" onclick="somar()">
+        <div id="res">
+            Resultado
+        </div>
+    </section>
+
+    <script>
+        function somar() {
+            var t1 = document.getElementById('text')
+            var t2 = document.querySelector('input#text1')
+            var res = document.getElementById('res')
+            var t1 = Number(t1.value)
+            var t2 = Number(t2.value)
+            var s = t1 + t2
+            res.innerHTML = `A soma entre ${t1} e ${t2} é igual a <strong>${s}</strong>.`
+        }
+    </script>
+</body>
+</html>
