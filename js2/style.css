@@ -41,6 +41,7 @@ button{
 
 .bottom{
     font-size: 1.5em;
+    cursor: pointer;
 }
 
 .bottom-navigate{
@@ -69,6 +70,7 @@ button{
     height: 3px;
     width: 100%;
     border-radius: 15px;
+    cursor: pointer;
 }
 
 #progresso-barra{

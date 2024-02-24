@@ -7,6 +7,7 @@ const avancar = document.getElementById('avancar');
 const voltar = document.getElementById('voltar');
 const barraPro = document.getElementById('progresso-barra');
 const progressContainer = document.getElementById('progress-container');
+const shufleButton = document.getElementById('embaralhar');
 
 const NovemberRain = {
     nomeSom: 'November Rain',
@@ -24,7 +25,9 @@ const BohemianRhapsody = {
     file: 'Queen'
 };
 let tocando = false;
-const playList = [NovemberRain, WindOfChange, BohemianRhapsody];
+let embaralhado = false;
+const originalPlayList = [NovemberRain, WindOfChange, BohemianRhapsody];
+let sortedPlaylist = [...originalPlayList]
 let index = 0;
 
 
@@ -52,15 +55,15 @@ function playPause(){
 }
 
 function iniciarsom(){
-    capa.src = `imagens/${playList[index].file}.webp`;
-    som.src = `songs/${playList[index].file}.mp3`;
-    nomeSom.innerText = playList[index].nomeSom;
-    nomeBanda.innerText = playList[index].artist;
+    capa.src = `imagens/${sortedPlaylist[index].file}.webp`;
+    som.src = `songs/${sortedPlaylist[index].file}.mp3`;
+    nomeSom.innerText = sortedPlaylist[index].nomeSom;
+    nomeBanda.innerText = sortedPlaylist[index].artist;
 }
 
 function voltarSom(){
     if(index === 0){
-        index = playList.length - 1;
+        index = sortedPlayList.length - 1;
     } else{
         index -= 1
     }
@@ -69,7 +72,7 @@ function voltarSom(){
     
 }
 function avancarSom(){
-    if(index === playList.length - 1){
+    if(index === sortedPlayList.length - 1){
         index = 0;
     } else{
         index += 1
@@ -91,6 +94,25 @@ function jumpTo(event){
     som.currentTime = jumpTotime
 }
 
+function shufleButtonclick(){
+    if(embaralhado === false){
+        embaralhado = true;
+        shuflePlaylistArray();
+    }
+}
+
+function shuflePlaylistArray(preshuflePlaylistArray){
+   const size = preshuflePlaylistArray.length;//3 musicas
+   let currentIndex = size - 1;
+   while(currentIndex > 0){
+        let ramdomIndex = Math.floor(Math.random()* size);
+        let aux = preshuflePlaylistArray[currentIndex];
+        preshuflePlaylistArray[currentIndex] = preshuflePlaylistArray[ramdomIndex];
+        preshuflePlaylistArray[ramdomIndex] = aux;
+        currentIndex -= 1;
+   }
+}
+
 iniciarsom();
 
 play.addEventListener('click', playPause);
@@ -98,3 +120,4 @@ voltar.addEventListener('click', voltarSom);
 avancar.addEventListener('click', avancarSom);
 som.addEventListener('timeupdate', progressBar);
 progressContainer.addEventListener('click', jumpTo)
+shufleButton.addEventListener('click', shufleButtonclick)
