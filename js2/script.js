@@ -86,9 +86,10 @@ function avancarSom(){
     
 }
 
-function progressBar(){
+function updateProgress(){
     const barWidth = (som.currentTime/som.duration)*100;
     barraPro.style.setProperty('--progress', `${barWidth}%`);
+    songTime.innerText = dataHmin(som.currentTime);
 }
 
 function jumpTo(event){
@@ -145,16 +146,13 @@ function dataHmin(originalNumber){
     let min = Math.floor((originalNumber - hora * 3600) / 60);
     let seg = Math.floor(originalNumber - hora * 3600 - min * 60);
 
-    alert(`${hora}:${min}:${seg}`)
-}
+    return (`${hora.toString().padStart(2, '0')}:${min.toString().padStart(2, '0')}:${seg.toString().padStart(2, '0')}`);
 
-function updateCurrentTime(){
-    songTime.innerText = som.currentTime;
+    //toString - transforma numeros em texto corrido
 }
 
 function updateTotalTime(){
-    dataHmin(som.duration)
-    totalTime.innerText = som.duration;
+    totalTime.innerText = dataHmin (som.duration);
 }
 
 iniciarsom();
@@ -163,7 +161,7 @@ iniciarsom();
 play.addEventListener('click', playPause);
 voltar.addEventListener('click', voltarSom);
 avancar.addEventListener('click', avancarSom);
-som.addEventListener('timeupdate', progressBar);
+som.addEventListener('timeupdate', updateProgress);
 som.addEventListener('ended', nextOrRepeat);
 som.addEventListener('loadedmetadata', updateTotalTime);
 progressContainer.addEventListener('click', jumpTo);
