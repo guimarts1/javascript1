@@ -8,6 +8,9 @@ const voltar = document.getElementById('voltar');
 const barraPro = document.getElementById('progresso-barra');
 const progressContainer = document.getElementById('progress-container');
 const shufleButton = document.getElementById('embaralhar');
+const repeatButton = document.getElementById('repetir');
+const songTime = document.getElementById('song-time');
+const totalTime = document.getElementById('total-time');
 
 const NovemberRain = {
     nomeSom: 'November Rain',
@@ -29,8 +32,9 @@ let embaralhado = false;
 const originalPlayList = [NovemberRain, WindOfChange, BohemianRhapsody];
 let sortedPlaylist = [...originalPlayList]
 let index = 0;
+let repeatOn = false;
 
-
+//functions abaixo:
 
 function playsong(){
     play.querySelector('.bi').classList.remove('bi-play-circle-fill');
@@ -63,7 +67,7 @@ function iniciarsom(){
 
 function voltarSom(){
     if(index === 0){
-        index = sortedPlayList.length - 1;
+        index = sortedPlaylist.length - 1;
     } else{
         index -= 1
     }
@@ -72,7 +76,7 @@ function voltarSom(){
     
 }
 function avancarSom(){
-    if(index === sortedPlayList.length - 1){
+    if(index === sortedPlaylist.length - 1){
         index = 0;
     } else{
         index += 1
@@ -97,7 +101,12 @@ function jumpTo(event){
 function shufleButtonclick(){
     if(embaralhado === false){
         embaralhado = true;
-        shuflePlaylistArray();
+        shuflePlaylistArray(sortedPlaylist);
+        shufleButton.classList.add('button-active')
+    } else{
+        embaralhado = false;
+        shuflePlaylistArray(...originalPlayList);
+        shufleButton.classList.remove('button-active')
     }
 }
 
@@ -113,11 +122,50 @@ function shuflePlaylistArray(preshuflePlaylistArray){
    }
 }
 
+function repeatButtonclick(){
+    if(repeatOn === false){
+        repeatOn = true;
+        repeatButton.classList.add('button-active');
+    } else{
+        repeatOn = false;
+        repeatButton.classList.remove('button-active');
+    }
+}
+
+function nextOrRepeat(){
+    if(repeatOn === false){
+        avancarSom();
+    } else{
+        playsong();
+    }
+}
+
+function dataHmin(originalNumber){
+    let hora = Math.floor(originalNumber / 3600);
+    let min = Math.floor((originalNumber - hora * 3600) / 60);
+    let seg = Math.floor(originalNumber - hora * 3600 - min * 60);
+
+    alert(`${hora}:${min}:${seg}`)
+}
+
+function updateCurrentTime(){
+    songTime.innerText = som.currentTime;
+}
+
+function updateTotalTime(){
+    dataHmin(som.duration)
+    totalTime.innerText = som.duration;
+}
+
 iniciarsom();
 
+//eventos abaixo:
 play.addEventListener('click', playPause);
 voltar.addEventListener('click', voltarSom);
 avancar.addEventListener('click', avancarSom);
 som.addEventListener('timeupdate', progressBar);
-progressContainer.addEventListener('click', jumpTo)
-shufleButton.addEventListener('click', shufleButtonclick)
+som.addEventListener('ended', nextOrRepeat);
+som.addEventListener('loadedmetadata', updateTotalTime);
+progressContainer.addEventListener('click', jumpTo);
+shufleButton.addEventListener('click', shufleButtonclick);
+repeatButton.addEventListener('click', repeatButtonclick);
