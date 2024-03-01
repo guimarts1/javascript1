@@ -5,6 +5,7 @@ const capa = document.getElementById('img-capa');
 const play = document.getElementById('play');
 const avancar = document.getElementById('avancar');
 const voltar = document.getElementById('voltar');
+const likeButton = document.getElementById('liked');
 const barraPro = document.getElementById('progresso-barra');
 const progressContainer = document.getElementById('progress-container');
 const shufleButton = document.getElementById('embaralhar');
@@ -15,17 +16,20 @@ const totalTime = document.getElementById('total-time');
 const NovemberRain = {
     nomeSom: 'November Rain',
     artist: 'Guns',
-    file: 'guns'
+    file: 'guns',
+    liked: false,
 };
 const WindOfChange = {
     nomeSom: 'Wind Of Change',
     artist: 'Scorpions',
-    file: 'scorpions5'
+    file: 'scorpions5',
+    liked: true,
 };
 const BohemianRhapsody = {
     nomeSom: 'Bohemian Rhapsody',
     artist: 'Queen',
-    file: 'Queen'
+    file: 'Queen',
+    liked: false,
 };
 let tocando = false;
 let embaralhado = false;
@@ -63,6 +67,7 @@ function iniciarsom(){
     som.src = `songs/${sortedPlaylist[index].file}.mp3`;
     nomeSom.innerText = sortedPlaylist[index].nomeSom;
     nomeBanda.innerText = sortedPlaylist[index].artist;
+    likeButtonPaint();
 }
 
 function voltarSom(){
@@ -84,6 +89,18 @@ function avancarSom(){
     iniciarsom();
     playsong();
     
+}
+
+function likeButtonPaint(){
+    if (sortedPlaylist[index].liked === true){
+        likeButton.querySelector('.bi').classList.remove('bi-heart');
+        likeButton.querySelector('.bi').classList.add('bi-heart-fill');
+        likeButton.classList.add('button-active');
+    } else{
+        likeButton.querySelector('.bi').classList.add('bi-heart');
+        likeButton.querySelector('.bi').classList.remove('bi-heart-fill');
+        likeButton.classList.remove('button-active');
+    }
 }
 
 function updateProgress(){
@@ -155,6 +172,15 @@ function updateTotalTime(){
     totalTime.innerText = dataHmin (som.duration);
 }
 
+function likeButtonClicked(){
+    if(sortedPlaylist[index].liked === false){
+        sortedPlaylist[index].liked = true;
+    } else{
+        sortedPlaylist[index].liked = false;
+    }
+    likeButtonPaint()
+}
+
 iniciarsom();
 
 //eventos abaixo:
@@ -167,3 +193,4 @@ som.addEventListener('loadedmetadata', updateTotalTime);
 progressContainer.addEventListener('click', jumpTo);
 shufleButton.addEventListener('click', shufleButtonclick);
 repeatButton.addEventListener('click', repeatButtonclick);
+likeButton.addEventListener('click', likeButtonClicked)
